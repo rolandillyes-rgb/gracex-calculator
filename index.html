@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRACEX Psychosocial Risk Exposure Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory:#EEEAE5; --sandstone:#A28B6E; --sky:#B4C9E6; --steel:#7E8FA6;
+    --slate:#4D596A; --ivory-dim:#DDD9D3; --text:#1a1a1a; --danger:#9c3b35;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--ivory); color: var(--text); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+
+  nav { background: var(--slate); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 52px; }
+  .nav-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; letter-spacing: 0.22em; color: var(--ivory); text-decoration: none; }
+  .nav-tag { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(238,234,229,0.55); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+
+  header.hero { background: var(--slate); padding: 46px 0 40px; }
+  .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 14px; }
+  header.hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; line-height: 1.12; color: var(--ivory); font-weight: 400; margin-bottom: 18px; max-width: 760px; }
+  header.hero h1 em { font-style: italic; color: var(--sandstone); }
+  .hero-sub { font-size: 0.98rem; color: rgba(238,234,229,0.78); max-width: 660px; line-height: 1.7; }
+
+  main { padding: 40px 0 0; }
+
+  .spine { background: #fff; border: 0.5px solid var(--ivory-dim); border-left: 3px solid var(--sandstone); border-radius: 8px; padding: 24px 28px; margin-bottom: 26px; }
+  .spine .sp-ey { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sandstone); font-weight: 600; margin-bottom: 10px; }
+  .spine p { font-size: 0.92rem; color: #3a3a3a; line-height: 1.72; }
+  .spine b { color: var(--slate); font-weight: 500; }
+
+  .panel { background: #fff; border: 0.5px solid var(--ivory-dim); border-radius: 8px; padding: 30px 30px 26px; margin-bottom: 26px; }
+  .panel-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 6px; }
+  .panel h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: var(--slate); font-weight: 400; margin-bottom: 4px; }
+  .panel-help { font-size: 0.82rem; color: var(--steel); margin-bottom: 24px; }
+
+  .state-row { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--ivory-dim); flex-wrap: wrap; }
+  .state-row .field { min-width: 220px; }
+
+  .input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 26px; }
+  .field label { display: block; font-size: 0.74rem; color: var(--slate); font-weight: 500; margin-bottom: 7px; }
+  .field .field-val { font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; color: var(--slate); font-weight: 400; }
+  .field input[type=range] { width: 100%; accent-color: var(--slate); margin-top: 6px; }
+  .field-limits { display: flex; justify-content: space-between; font-size: 0.6rem; color: #b0aaa2; margin-top: 3px; }
+  .field select, .field input[type=number] { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); border: 0.5px solid var(--ivory-dim); border-radius: 5px; padding: 9px 11px; background: var(--ivory); margin-top: 4px; }
+  .field-hint { font-size: 0.66rem; color: var(--steel); margin-top: 6px; line-height: 1.45; }
+
+  .opt-toggle { display: flex; align-items: center; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--ivory-dim); }
+  .opt-toggle input { width: 16px; height: 16px; accent-color: var(--slate); }
+  .opt-toggle label { font-size: 0.78rem; color: var(--slate); font-weight: 500; }
+  .opt-sub { display: none; margin-top: 16px; padding: 18px; background: var(--ivory); border-radius: 6px; }
+  .opt-sub.show { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  .headline { background: var(--slate); border-radius: 8px; padding: 34px 32px; margin-bottom: 26px; color: var(--ivory); }
+  .headline .hl-label { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 14px; }
+  .headline .hl-main { font-family: 'Playfair Display', Georgia, serif; font-size: 1.65rem; line-height: 1.34; font-weight: 400; max-width: 780px; }
+  .headline .hl-main b { color: var(--sandstone); font-weight: 600; font-style: italic; }
+  .headline .hl-foot { font-size: 0.72rem; color: rgba(238,234,229,0.5); margin-top: 16px; max-width: 720px; }
+
+  .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .rcard { background: #fff; border: 0.5px solid var(--ivory-dim); border-radius: 8px; padding: 26px 26px 22px; }
+  .rcard .rc-ey { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 12px; }
+  .rcard .rc-big { font-family: 'Playfair Display', Georgia, serif; font-size: 2.1rem; color: var(--slate); font-weight: 400; line-height: 1.05; }
+  .rcard .rc-cap { font-size: 0.78rem; color: var(--steel); margin-top: 6px; line-height: 1.5; }
+  .why { margin-top: 13px; font-size: 0.74rem; color: #4a4a4a; line-height: 1.55; }
+  .why span { display: block; color: var(--sandstone); font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.58rem; margin-bottom: 3px; }
+  .rc-line { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--ivory-dim); font-size: 0.86rem; }
+  .rc-lines { margin-top: 16px; }
+  .rc-line:first-child { border-top: none; }
+  .rc-line .lbl { color: #333; font-weight: 300; padding-right: 14px; }
+  .rc-line .val { font-weight: 500; color: var(--slate); white-space: nowrap; }
+  .rc-line .val.danger { color: var(--danger); }
+  .rc-sub { font-size: 0.7rem; color: var(--steel); margin-top: 12px; line-height: 1.5; }
+
+  .control-card { background: var(--ivory-dim); border-radius: 8px; padding: 26px; margin-top: 22px; }
+  .control-card .cc-ey { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sandstone); font-weight: 600; margin-bottom: 14px; }
+  .cc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .cc-col .cc-num { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: var(--slate); font-weight: 400; }
+  .cc-col .cc-lbl { font-size: 0.74rem; color: var(--steel); margin-top: 4px; line-height: 1.45; }
+  .cc-why { font-size: 0.72rem; color: #5a5e63; margin-top: 16px; padding-top: 14px; border-top: 1px solid #cfcac3; line-height: 1.55; }
+
+  .leftout { background: #fff; border: 0.5px solid var(--ivory-dim); border-radius: 8px; padding: 30px 32px; margin-top: 26px; }
+  .leftout .lo-ey { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 600; margin-bottom: 6px; }
+  .leftout h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: var(--slate); font-weight: 400; margin-bottom: 6px; }
+  .leftout .lo-intro { font-size: 0.84rem; color: var(--steel); margin-bottom: 18px; line-height: 1.6; max-width: 660px; }
+  .leftout ul { list-style: none; }
+  .leftout li { padding: 11px 0 11px 20px; position: relative; font-size: 0.84rem; color: #3a3a3a; border-top: 1px solid var(--ivory-dim); line-height: 1.6; }
+  .leftout li:first-child { border-top: none; }
+  .leftout li::before { content: '\2014'; position: absolute; left: 0; color: var(--sandstone); }
+  .leftout li b { color: var(--slate); font-weight: 500; }
+
+  .context-line { background: #fff; border: 0.5px solid var(--ivory-dim); border-left: 3px solid var(--sandstone); border-radius: 6px; padding: 18px 22px; margin-top: 26px; font-size: 0.82rem; color: #444; line-height: 1.6; }
+  .context-line b { color: var(--slate); font-weight: 500; }
+
+  .sources { background: var(--slate); border-radius: 8px; padding: 30px 32px; color: var(--ivory); margin: 30px 0 40px; }
+  .sources .src-ey { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 16px; }
+  .sources h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: 1.02rem; color: var(--ivory); margin: 16px 0 8px; }
+  .sources p, .sources li { font-size: 0.76rem; color: rgba(238,234,229,0.74); line-height: 1.6; }
+  .sources ul { list-style: none; }
+  .sources li { padding: 6px 0 6px 16px; position: relative; }
+  .sources li::before { content: ''; position: absolute; left: 0; top: 13px; width: 5px; height: 5px; background: var(--sandstone); border-radius: 50%; }
+  .sources a { color: var(--sky); text-decoration: underline; text-underline-offset: 2px; }
+  .sources a:hover { color: var(--ivory); }
+  .sources .disclaimer { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(238,234,229,0.14); font-size: 0.72rem; color: rgba(238,234,229,0.55); }
+
+  footer { text-align: center; padding: 0 0 50px; font-size: 0.68rem; color: var(--steel); letter-spacing: 0.04em; }
+
+  @media (max-width: 860px) {
+    .wrap { padding: 0 22px; } nav { padding: 0 22px; }
+    .input-grid { grid-template-columns: 1fr 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .cc-cols, .opt-sub.show { grid-template-columns: 1fr; }
+    header.hero h1 { font-size: 2rem; } .headline .hl-main { font-size: 1.36rem; }
+  }
+  @media (max-width: 540px) { .input-grid { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">GRACEX</a>
+  <span class="nav-tag">Psychosocial Risk Exposure</span>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Cost of Exposure &nbsp;/&nbsp; Australian WHS</div>
+    <h1>What psychosocial risk is <em>already costing</em> your organisation</h1>
+    <p class="hero-sub">This tool estimates what your business carries today from voluntary turnover and from a single workers compensation psychological injury claim. The claim figure is the employer's own cost, not the insurer's payout. Adjust the inputs to your own numbers. Every figure links to its source.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- SPINE -->
+    <div class="spine">
+      <div class="sp-ey">How to read this</div>
+      <p>Three numbers follow. The first is what voluntary turnover already costs you each year. The second is what a single psychological injury claim would add if one occurred. The third is what it costs to put a control in place against both. <b>Every figure carries its source, and the panel near the end sets out what this estimate deliberately leaves out.</b></p>
+    </div>
+
+    <!-- INPUTS -->
+    <section class="panel">
+      <div class="panel-label">Your numbers</div>
+      <h2>Set the inputs</h2>
+      <p class="panel-help">Defaults are illustrative. Change any value to reflect your organisation.</p>
+
+      <div class="state-row">
+        <div class="field">
+          <label for="state">State</label>
+          <select id="state" onchange="calc()">
+            <option value="nsw" selected>New South Wales</option>
+            <option value="vic">Victoria</option>
+            <option value="nat">National / other</option>
+          </select>
+          <div class="field-hint">Sets the premium rules and the scheme reference figure.</div>
+        </div>
+      </div>
+
+      <div class="input-grid">
+        <div class="field">
+          <label for="staff">Staff in scope <span class="field-val" id="staffVal">45</span></label>
+          <input type="range" id="staff" min="20" max="200" step="1" value="45" oninput="calc()">
+          <div class="field-limits"><span>20</span><span>200</span></div>
+        </div>
+        <div class="field">
+          <label for="salary">Average annual salary <span class="field-val" id="salaryVal">$110,000</span></label>
+          <input type="range" id="salary" min="55000" max="220000" step="5000" value="110000" oninput="calc()">
+          <div class="field-limits"><span>$55k</span><span>$220k</span></div>
+        </div>
+        <div class="field">
+          <label for="profile">Workforce profile</label>
+          <select id="profile" onchange="calc()">
+            <option value="0.40">Frontline / operational (40% of salary)</option>
+            <option value="0.80" selected>Technical / professional (80% of salary)</option>
+            <option value="2.00">Leadership / management (200% of salary)</option>
+          </select>
+          <div class="field-hint">Sets the turnover replacement rate, per Gallup's role tiers.</div>
+        </div>
+        <div class="field">
+          <label for="departures">Voluntary departures, last 12 months <span class="field-val" id="departuresVal">6</span></label>
+          <input type="range" id="departures" min="0" max="60" step="1" value="6" oninput="calc()">
+          <div class="field-limits"><span>0</span><span>60</span></div>
+        </div>
+        <div class="field">
+          <label for="claims">Psychological injury claims, last 12 months <span class="field-val" id="claimsVal">0</span></label>
+          <input type="range" id="claims" min="0" max="8" step="1" value="0" oninput="calc()">
+          <div class="field-limits"><span>0</span><span>8</span></div>
+          <div class="field-hint">Leave at zero to model the cost should a first claim occur.</div>
+        </div>
+        <div class="field">
+          <label for="pricingSel">GRACEX pricing</label>
+          <select id="pricingSel" onchange="calc()">
+            <option value="std" selected>Standard</option>
+            <option value="ea">Early adopter</option>
+          </select>
+          <div class="field-hint">Standard is $30 per employee per month plus a one-off Readiness Assessment. Early adopter waives the Assessment and the first six months.</div>
+        </div>
+      </div>
+
+      <div class="opt-toggle">
+        <input type="checkbox" id="lbToggle" onchange="toggleLB()">
+        <label for="lbToggle">Include lost billable revenue (fee-earning firms only)</label>
+      </div>
+      <div class="opt-sub" id="lbSub">
+        <div class="field">
+          <label for="gapWeeks">Weeks the role is uncovered before a contractor starts <span class="field-val" id="gapWeeksVal">3</span></label>
+          <input type="range" id="gapWeeks" min="1" max="8" step="1" value="3" oninput="calc()">
+          <div class="field-limits"><span>1</span><span>8</span></div>
+        </div>
+        <div class="field">
+          <label for="revMult">Revenue per fee-earner, as a multiple of salary <span class="field-val" id="revMultVal">2.5x</span></label>
+          <input type="range" id="revMult" min="1.5" max="3.5" step="0.1" value="2.5" oninput="calc()">
+          <div class="field-limits"><span>1.5x</span><span>3.5x</span></div>
+          <div class="field-hint">Counts only the uncovered gap, so it does not double count with the contractor backfill.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HEADLINE -->
+    <div class="headline">
+      <div class="hl-label">What one claim costs you</div>
+      <div class="hl-main">A single psychological injury claim costs your business about <b id="hlClaim">$119,779</b>. That is roughly <b id="hlYears">7 years</b> of the GRACEX control at standard price for your headcount.</div>
+      <div class="hl-foot" id="hlFoot">Employer cost only, built from contractor backfill over the median absence plus internal management time. Premium impact is excluded and explained below.</div>
+    </div>
+
+    <!-- EXPOSURE CARDS -->
+    <div class="results-grid">
+      <div class="rcard">
+        <div class="rc-ey">Exposure 1 &nbsp;/&nbsp; Recurring, each year</div>
+        <div class="rc-big" id="turnoverVal">$528,000</div>
+        <div class="rc-cap">Annual economic cost of replacing voluntary leavers. This is the full cost including lost productivity and ramp, not only recruitment spend.</div>
+        <div class="why"><span>Why this number</span>Your departures multiplied by Gallup's replacement rate for the workforce profile you chose. Technical and professional roles replace at 80% of salary, which is why the figure is larger than a recruitment invoice.</div>
+        <div class="rc-lines">
+          <div class="rc-line"><span class="lbl" id="preventableLbl">Preventable (Gallup 42%): 2 of 6 departures</span><span class="val" id="preventableVal">$176,000</span></div>
+        </div>
+        <p class="rc-sub">Gallup finds 42% of voluntary departures were preventable through earlier management action. Applied as whole people and rounded down, so it never overstates. An industry finding on what is addressable, not a figure GRACEX guarantees to recover.</p>
+      </div>
+
+      <div class="rcard">
+        <div class="rc-ey">Exposure 2 &nbsp;/&nbsp; Per claim, if one occurs</div>
+        <div class="rc-big" id="claimTotalVal">$119,779</div>
+        <div class="rc-cap">Employer cost should a single psychological injury claim occur.</div>
+        <div class="why"><span>Why this number</span>The injured worker's wages are carried by the scheme, so this counts only what it costs you to cover the role: a contractor at a market rate over the median absence, plus your own management and return-to-work time. Premium is excluded.</div>
+        <div class="rc-lines">
+          <div class="rc-line"><span class="lbl">Contractor backfill (1.5x salary, 35.7 weeks)</span><span class="val danger" id="contractorVal">$113,279</span></div>
+          <div class="rc-line"><span class="lbl">Management and return-to-work time</span><span class="val danger" id="mgmtVal">$6,500</span></div>
+          <div class="rc-line" id="lbLine" style="display:none;"><span class="lbl">Lost billable revenue (uncovered gap)</span><span class="val danger" id="lbVal">$0</span></div>
+          <div class="rc-line" id="claimsActualLine" style="display:none;"><span class="lbl" id="claimsActualLbl">Realised claims</span><span class="val danger" id="claimsActualVal">$0</span></div>
+        </div>
+        <p class="rc-sub">The contractor is the realistic cover for the absence: the role is filled while the worker is off, at a market rate higher than salary.</p>
+      </div>
+    </div>
+
+    <!-- CONTROL COST -->
+    <div class="control-card">
+      <div class="cc-ey">The control &nbsp;/&nbsp; GRACEX cost</div>
+      <div class="cc-cols">
+        <div class="cc-col">
+          <div class="cc-num" id="costYear1">$22,700</div>
+          <div class="cc-lbl" id="costYear1Lbl">Year one, licence plus Readiness Assessment</div>
+        </div>
+        <div class="cc-col">
+          <div class="cc-num" id="costOngoing">$16,200</div>
+          <div class="cc-lbl">Each year ongoing &middot; $30 per employee per month</div>
+        </div>
+      </div>
+      <div class="cc-why" id="ccWhy">A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GRACEX licence and Assessment only.</div>
+    </div>
+
+    <!-- WHAT WE LEFT OUT -->
+    <div class="leftout">
+      <div class="lo-ey">The conservative case</div>
+      <h2>What this estimate leaves out</h2>
+      <p class="lo-intro">The figures above are deliberately built low. These real costs are not counted, which means your true exposure is higher, not lower, than what is shown.</p>
+      <ul>
+        <li id="loPremium"><b>Premium impact.</b> Excluded.</li>
+        <li><b>The injured worker's own wages.</b> Carried by the workers compensation scheme during the absence, so not counted as your cost.</li>
+        <li><b>Knock-on turnover and team morale.</b> A claim or a departure often triggers others. Not modelled.</li>
+        <li><b>Legal, investigation and dispute costs.</b> Variable and excluded.</li>
+        <li><b>The median absence, not the average.</b> The longer mean would raise every claim figure. We use the shorter median.</li>
+        <li><b>Whole people, rounded down.</b> Preventable departures are counted as whole people and rounded down, never up.</li>
+      </ul>
+    </div>
+
+    <!-- CONTEXT LINE -->
+    <div class="context-line" id="contextLine">
+      For reference, the NSW scheme pays an average of <b>$288,542</b> on a psychological injury claim. That is the insurer's cost, not yours. The figure above is your own modelled cost as the employer, which is why it is lower and built from items you actually pay.
+    </div>
+
+    <!-- SOURCES -->
+    <div class="sources">
+      <div class="src-ey">Sources and assumptions</div>
+
+      <h3>Turnover replacement (Exposure 1)</h3>
+      <ul>
+        <li>Replacement cost by role, 40% of salary for frontline, 80% for technical and professional, 200% for leaders and managers, and 42% of voluntary departures preventable through earlier management action. <a href="https://www.gallup.com/workplace/646538/employee-turnover-preventable-often-ignored.aspx" target="_blank" rel="noopener">Gallup Workplace, 2024</a>.</li>
+      </ul>
+
+      <h3>Employer claim cost (Exposure 2)</h3>
+      <ul>
+        <li>Median time lost for a serious mental health claim, 35.7 working weeks, 2022-23. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.</li>
+        <li>Contractor and labour-hire cost runs about 1.3 to 1.5 times the base wage once on-costs and margin are included. The model uses the conservative 1.5x. <a href="https://wiserecruitments.com.au/labour-hire-cost-australia-2026/" target="_blank" rel="noopener">Wise Recruitment, 2026</a>.</li>
+        <li>Management and return-to-work time, around 80 hours at $80 per hour, $6,500. Modelled GRACEX assumption based on claim-handling experience, not a published statistic.</li>
+        <li>Productivity ramp is not given a dollar figure. For context only, technical and senior roles take 60 to 90 days to reach full productivity. <a href="https://www.allencomm.com/2026/04/successful-onboarding-time-to-productivity-early-performance-signals/" target="_blank" rel="noopener">Oxford Economics, cited in AllenComm, 2026</a>.</li>
+      </ul>
+
+      <h3>Premium impact, why it is excluded</h3>
+      <ul>
+        <li id="srcPremium"></li>
+      </ul>
+
+      <h3>Scheme context</h3>
+      <ul>
+        <li id="srcContext"></li>
+      </ul>
+
+      <p class="disclaimer">General information, not financial or legal advice. Verify any figure against its source before relying on it. Replacement, contractor and management figures are modelled, and the result is an estimate of exposure, not a guarantee of cost or saving.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  GRACEX &nbsp;&middot;&nbsp; Figures are estimates for discussion, not advice
+</footer>
+
+<script>
+  var GALLUP_PREVENTABLE = 0.42;
+  var ABSENCE_WEEKS = 35.7;
+  var CONTRACTOR_MULT = 1.5;
+  var MGMT = 6500;
+  var PRICE_PEM = 30;
+  var lbOn = false;
+
+  var STATES = {
+    nsw: {
+      leftout: '<b>Premium impact.</b> Excluded. Under icare NSW rules, employers with an average performance premium of $30,000 or less are not affected by claim costs at all. Above that, increases are capped at 25% from 30 June 2026, and there is no published figure for one claim on one employer.',
+      src: 'Under icare NSW rules, employers with an average performance premium of $30,000 or less are small employers whose premium is not directly affected by claim costs. Above that threshold a claim can affect premium through the Claims Performance Rate, with premium-increase capping reducing to 25% from 30 June 2026. <a href="https://www.icare.nsw.gov.au/workers-compensation/employers/how-much-will-it-cost" target="_blank" rel="noopener">icare NSW</a> and <a href="https://www.icare.nsw.gov.au/workers-compensation/employers/new-policy/understanding-your-premium" target="_blank" rel="noopener">Understanding your premium</a>.',
+      context: 'For reference, the NSW scheme pays an average of <b>$288,542</b> on a psychological injury claim. That is the insurer\u2019s cost, not yours. The figure above is your own modelled cost as the employer, which is why it is lower and built from items you actually pay.',
+      srcContext: 'NSW average cost of a psychological injury claim, $288,542 in 2024-25. NSW Treasurer, Workers Compensation Ministerial Statement, 18 March 2025. <a href="https://www.nsw.gov.au/ministerial-releases/workers-compensation-reform-to-address-psychological-safety" target="_blank" rel="noopener">NSW Government</a>.'
+    },
+    vic: {
+      leftout: '<b>Premium impact.</b> Excluded. Under WorkSafe Victoria rules, employers with rateable remuneration of $200,000 or less are not affected by claim costs. Above that, premium-rate increases are capped at 30% a year, and there is no published figure for one claim on one employer.',
+      src: 'Under WorkSafe Victoria rules, employers with rateable remuneration of $200,000 or less are small employers whose premium is not affected by claim costs. Above that threshold a claim can affect the premium rate through claims experience, with year-on-year premium-rate increases capped at 30%. <a href="https://www.worksafe.vic.gov.au/previous-claims-your-premium" target="_blank" rel="noopener">WorkSafe Victoria</a> and <a href="https://www.worksafe.vic.gov.au/capping-how-it-affects-your-premium" target="_blank" rel="noopener">premium capping</a>.',
+      context: 'For reference, the national median compensation for a serious mental health claim is <b>$67,400</b>. Victoria does not publish a separate scheme average, so the national median is shown. That is the scheme\u2019s cost, not yours. The figure above is your own modelled cost as the employer.',
+      srcContext: 'National median compensation for a serious mental health claim, $67,400, 2022-23. Victoria does not publish a separate scheme average. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.'
+    },
+    nat: {
+      leftout: '<b>Premium impact.</b> Excluded. Workers compensation premiums are experience-rated for larger employers and capped year on year, while small employers are industry-rated and not directly affected by individual claims. Thresholds and caps vary by state.',
+      src: 'Workers compensation premiums are experience-rated for larger employers and capped year on year, while small employers are industry-rated and not directly affected by individual claims. Thresholds, caps and terms vary by state. There is no published figure for the premium effect of a single psychological injury claim on one employer. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia</a>.',
+      context: 'For reference, the national median compensation for a serious mental health claim is <b>$67,400</b>. That is the scheme\u2019s cost, not yours. The figure above is your own modelled cost as the employer, built from items you actually pay.',
+      srcContext: 'National median compensation for a serious mental health claim, $67,400, 2022-23. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.'
+    }
+  };
+
+  function fmtAUD(n) { return '$' + Math.round(n).toLocaleString('en-AU'); }
+
+  function raCost(staff) {
+    if (staff <= 50) return 6500;
+    if (staff <= 100) return 9500;
+    return 14500;
+  }
+
+  function toggleLB() {
+    lbOn = document.getElementById('lbToggle').checked;
+    document.getElementById('lbSub').classList.toggle('show', lbOn);
+    document.getElementById('lbLine').style.display = lbOn ? 'flex' : 'none';
+    calc();
+  }
+
+  function calc() {
+    var staff   = parseInt(document.getElementById('staff').value);
+    var salary  = parseInt(document.getElementById('salary').value);
+    var repRate = parseFloat(document.getElementById('profile').value);
+    var deps    = parseInt(document.getElementById('departures').value);
+    var claims  = parseInt(document.getElementById('claims').value);
+    var pricing = document.getElementById('pricingSel').value;
+    var st      = document.getElementById('state').value;
+    var gapWeeks= parseInt(document.getElementById('gapWeeks').value);
+    var revMult = parseFloat(document.getElementById('revMult').value);
+
+    document.getElementById('staffVal').textContent      = staff;
+    document.getElementById('salaryVal').textContent     = fmtAUD(salary);
+    document.getElementById('departuresVal').textContent = deps;
+    document.getElementById('claimsVal').textContent     = claims;
+    document.getElementById('gapWeeksVal').textContent   = gapWeeks;
+    document.getElementById('revMultVal').textContent    = revMult.toFixed(1) + 'x';
+
+    // Exposure 1: turnover
+    var costPer     = salary * repRate;
+    var turnover    = deps * costPer;
+    var depsPrev    = Math.floor(deps * GALLUP_PREVENTABLE);
+    var preventable = depsPrev * costPer;
+    document.getElementById('turnoverVal').textContent    = fmtAUD(turnover);
+    document.getElementById('preventableLbl').textContent =
+      'Preventable (Gallup 42%): ' + depsPrev + ' of ' + deps + (deps === 1 ? ' departure' : ' departures');
+    document.getElementById('preventableVal').textContent = fmtAUD(preventable);
+
+    // Exposure 2: single claim, employer cost (contractor scenario)
+    var contractor = salary * CONTRACTOR_MULT * (ABSENCE_WEEKS / 52);
+    var lostBill   = lbOn ? (revMult * salary / 52) * gapWeeks : 0;
+    var singleClaim = contractor + MGMT + lostBill;
+    document.getElementById('contractorVal').textContent = fmtAUD(contractor);
+    document.getElementById('mgmtVal').textContent       = fmtAUD(MGMT);
+    if (lbOn) document.getElementById('lbVal').textContent = fmtAUD(lostBill);
+    document.getElementById('claimTotalVal').textContent = fmtAUD(singleClaim);
+
+    var actualLine = document.getElementById('claimsActualLine');
+    if (claims > 0) {
+      actualLine.style.display = 'flex';
+      document.getElementById('claimsActualLbl').textContent =
+        'Realised: ' + claims + ' claim' + (claims > 1 ? 's' : '') + ' in last 12 months';
+      document.getElementById('claimsActualVal').textContent = fmtAUD(claims * singleClaim);
+    } else {
+      actualLine.style.display = 'none';
+    }
+
+    // Control cost
+    var ongoing = staff * PRICE_PEM * 12;
+    var ra = raCost(staff);
+    var year1;
+    if (pricing === 'ea') {
+      year1 = staff * PRICE_PEM * 6;
+      document.getElementById('costYear1Lbl').textContent = 'Year one \u00b7 first six months free, Assessment waived';
+      document.getElementById('ccWhy').textContent = 'Early adopter: the Readiness Assessment is complimentary and the first six months are free, then $30 per employee per month. Pricing shown is the GRACEX licence only.';
+    } else {
+      year1 = ongoing + ra;
+      document.getElementById('costYear1Lbl').textContent = 'Year one, licence plus Readiness Assessment (' + fmtAUD(ra) + ')';
+      document.getElementById('ccWhy').textContent = 'A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GRACEX licence and Assessment only.';
+    }
+    document.getElementById('costYear1').textContent   = fmtAUD(year1);
+    document.getElementById('costOngoing').textContent = fmtAUD(ongoing);
+
+    // Headline
+    var years = ongoing > 0 ? (singleClaim / ongoing) : 0;
+    document.getElementById('hlClaim').textContent = fmtAUD(singleClaim);
+    document.getElementById('hlYears').textContent = (years >= 1 ? Math.round(years) : years.toFixed(1)) + ' years';
+    document.getElementById('hlFoot').textContent =
+      'Employer cost only, built from contractor backfill over the 35.7-week median absence plus management time' +
+      (lbOn ? ' and the uncovered billing gap' : '') +
+      '. Premium impact is excluded and explained below. Compared against $30 per employee per month for ' + staff + ' staff.';
+
+    // State-specific blocks
+    var s = STATES[st];
+    document.getElementById('loPremium').innerHTML = s.leftout;
+    document.getElementById('srcPremium').innerHTML = s.src;
+    document.getElementById('contextLine').innerHTML = s.context;
+    document.getElementById('srcContext').innerHTML = s.srcContext;
+  }
+
+  calc();
+</script>
+</body>
+</html>
