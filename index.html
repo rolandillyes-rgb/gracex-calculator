@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GRACEX Psychosocial Risk Exposure Calculator</title>
+<title>GraceX Psychosocial Risk Exposure Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -90,7 +90,7 @@
   .leftout ul { list-style: none; }
   .leftout li { padding: 11px 0 11px 20px; position: relative; font-size: 0.84rem; color: #3a3a3a; border-top: 1px solid var(--ivory-dim); line-height: 1.6; }
   .leftout li:first-child { border-top: none; }
-  .leftout li::before { content: '\2014'; position: absolute; left: 0; color: var(--sandstone); }
+  .leftout li::before { content: ''; position: absolute; left: 0; top: 18px; width: 5px; height: 5px; background: var(--sandstone); border-radius: 50%; }
   .leftout li b { color: var(--slate); font-weight: 500; }
 
   .context-line { background: #fff; border: 0.5px solid var(--ivory-dim); border-left: 3px solid var(--sandstone); border-radius: 6px; padding: 18px 22px; margin-top: 26px; font-size: 0.82rem; color: #444; line-height: 1.6; }
@@ -118,12 +118,28 @@
   }
   @media (max-width: 540px) { .input-grid { grid-template-columns: 1fr; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  /* pricing pick */
+  .pricing-pick { background:#fff; border:0.5px solid var(--ivory-dim); border-left:3px solid var(--sandstone); border-radius:8px; padding:20px 24px; margin-top:24px; }
+  .pricing-pick .pp-instruct { font-size:0.82rem; color:var(--slate); font-weight:600; margin-bottom:14px; letter-spacing:0.01em; }
+  .pricing-pick .pp-row { display:flex; align-items:flex-end; gap:22px; flex-wrap:wrap; }
+  .pricing-pick .pp-field { min-width:240px; }
+  .pricing-pick .pp-hint { flex:1 1 280px; min-width:240px; align-self:center; }
+
+  .opt-hint { font-size:0.74rem; color:var(--steel); line-height:1.55; margin-top:10px; padding-left:26px; max-width:760px; }
+
+  /* leftout accordion */
+  .lo-head { width:100%; display:flex; align-items:center; justify-content:space-between; gap:18px; background:none; border:none; padding:0; cursor:pointer; text-align:left; font-family:inherit; }
+  .lo-title { display:block; font-family:'Playfair Display', Georgia, serif; font-size:1.4rem; color:var(--slate); font-weight:400; margin-top:4px; }
+  .lo-chev { font-family:'DM Sans', sans-serif; font-size:1.6rem; color:var(--sandstone); font-weight:300; line-height:1; flex-shrink:0; }
+  .lo-body { display:none; margin-top:18px; }
+  .lo-body.show { display:block; }
+
 </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">GRACEX</a>
+  <a class="nav-logo" href="#">GraceX</a>
   <span class="nav-tag">Psychosocial Risk Exposure</span>
 </nav>
 
@@ -141,7 +157,7 @@
     <!-- SPINE -->
     <div class="spine">
       <div class="sp-ey">How to read this</div>
-      <p>Three numbers follow. The first is what voluntary turnover already costs you each year. The second is what a single psychological injury claim would add if one occurred. The third is what it costs to put a control in place against both. <b>Every figure carries its source, and the panel near the end sets out what this estimate deliberately leaves out.</b></p>
+      <p>Here is how to read what follows. The first number is what voluntary turnover is already costing your organisation each year. The second is what a single psychological injury claim would add, should one occur. The third is what it costs to put a control in place against both. <b>Every figure carries its source, and a short panel near the end sets out what the estimate deliberately leaves out, so you can see exactly how it was built.</b></p>
     </div>
 
     <!-- INPUTS -->
@@ -193,13 +209,33 @@
           <div class="field-limits"><span>0</span><span>8</span></div>
           <div class="field-hint">Leave at zero to model the cost should a first claim occur.</div>
         </div>
+      </div>
+
+      <div class="pricing-pick">
+        <div class="pp-instruct">Select the pricing that applies to you. Early adopter reveals the introductory terms below.</div>
+        <div class="pp-row">
+          <div class="field pp-field">
+            <label for="pricingSel">GraceX pricing</label>
+            <select id="pricingSel" onchange="calc()">
+              <option value="std" selected>Standard</option>
+              <option value="ea">Early adopter</option>
+            </select>
+          </div>
+          <div class="field-hint pp-hint">Standard is $30 per employee per month plus a one-off Readiness Assessment. Early adopter waives the Assessment, with a complimentary introductory period you set below.</div>
+        </div>
+      </div>
+
+      <div class="opt-sub" id="eaSub">
         <div class="field">
-          <label for="pricingSel">GRACEX pricing</label>
-          <select id="pricingSel" onchange="calc()">
-            <option value="std" selected>Standard</option>
-            <option value="ea">Early adopter</option>
-          </select>
-          <div class="field-hint">Standard is $30 per employee per month plus a one-off Readiness Assessment. Early adopter waives the Assessment and the first six months.</div>
+          <label for="freeMonths">Complimentary introductory months <span class="field-val" id="freeMonthsVal">3</span></label>
+          <input type="range" id="freeMonths" min="0" max="12" step="1" value="3" oninput="calc()">
+          <div class="field-limits"><span>0</span><span>12</span></div>
+          <div class="field-hint">The early adopter free period before standard billing begins. Held at three for new clients.</div>
+        </div>
+        <div class="field">
+          <label>Readiness Assessment</label>
+          <div class="field-val" id="raWaivedVal" style="font-size:1.05rem;">Waived</div>
+          <div class="field-hint" id="raWaivedHint">Complimentary for early adopters.</div>
         </div>
       </div>
 
@@ -207,6 +243,7 @@
         <input type="checkbox" id="lbToggle" onchange="toggleLB()">
         <label for="lbToggle">Include lost billable revenue (fee-earning firms only)</label>
       </div>
+      <p class="opt-hint">For firms whose people bill their time, such as recruiters, agencies, consultancies and professional services. When a fee-earner is off, the role often sits uncovered for a period before a contractor starts, and that gap is revenue the business does not recover. Switch this on to add it. It counts only the uncovered gap, so it does not double count with the contractor backfill.</p>
       <div class="opt-sub" id="lbSub">
         <div class="field">
           <label for="gapWeeks">Weeks the role is uncovered before a contractor starts <span class="field-val" id="gapWeeksVal">3</span></label>
@@ -225,7 +262,7 @@
     <!-- HEADLINE -->
     <div class="headline">
       <div class="hl-label">What one claim costs you</div>
-      <div class="hl-main">A single psychological injury claim costs your business about <b id="hlClaim">$119,779</b>. That is roughly <b id="hlYears">7 years</b> of the GRACEX control at standard price for your headcount.</div>
+      <div class="hl-main">A single psychological injury claim costs your business about <b id="hlClaim">$119,779</b>. That is roughly <b id="hlYears">7 years</b> of the GraceX control at standard price for your headcount.</div>
       <div class="hl-foot" id="hlFoot">Employer cost only, built from contractor backfill over the median absence plus internal management time. Premium impact is excluded and explained below.</div>
     </div>
 
@@ -239,7 +276,7 @@
         <div class="rc-lines">
           <div class="rc-line"><span class="lbl" id="preventableLbl">Preventable (Gallup 42%): 2 of 6 departures</span><span class="val" id="preventableVal">$176,000</span></div>
         </div>
-        <p class="rc-sub">Gallup finds 42% of voluntary departures were preventable through earlier management action. Applied as whole people and rounded down, so it never overstates. An industry finding on what is addressable, not a figure GRACEX guarantees to recover.</p>
+        <p class="rc-sub">Gallup finds 42% of voluntary departures were preventable through earlier management action. Applied as whole people and rounded down, so it never overstates. An industry finding on what is addressable, not a figure GraceX guarantees to recover.</p>
       </div>
 
       <div class="rcard">
@@ -259,7 +296,7 @@
 
     <!-- CONTROL COST -->
     <div class="control-card">
-      <div class="cc-ey">The control &nbsp;/&nbsp; GRACEX cost</div>
+      <div class="cc-ey">The control &nbsp;/&nbsp; GraceX cost</div>
       <div class="cc-cols">
         <div class="cc-col">
           <div class="cc-num" id="costYear1">$22,700</div>
@@ -270,22 +307,29 @@
           <div class="cc-lbl">Each year ongoing &middot; $30 per employee per month</div>
         </div>
       </div>
-      <div class="cc-why" id="ccWhy">A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GRACEX licence and Assessment only.</div>
+      <div class="cc-why" id="ccWhy">A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GraceX licence and Assessment only.</div>
     </div>
 
     <!-- WHAT WE LEFT OUT -->
     <div class="leftout">
-      <div class="lo-ey">The conservative case</div>
-      <h2>What this estimate leaves out</h2>
-      <p class="lo-intro">The figures above are deliberately built low. These real costs are not counted, which means your true exposure is higher, not lower, than what is shown.</p>
-      <ul>
-        <li id="loPremium"><b>Premium impact.</b> Excluded.</li>
-        <li><b>The injured worker's own wages.</b> Carried by the workers compensation scheme during the absence, so not counted as your cost.</li>
-        <li><b>Knock-on turnover and team morale.</b> A claim or a departure often triggers others. Not modelled.</li>
-        <li><b>Legal, investigation and dispute costs.</b> Variable and excluded.</li>
-        <li><b>The median absence, not the average.</b> The longer mean would raise every claim figure. We use the shorter median.</li>
-        <li><b>Whole people, rounded down.</b> Preventable departures are counted as whole people and rounded down, never up.</li>
-      </ul>
+      <button class="lo-head" id="loHead" onclick="toggleLeftout()" aria-expanded="false" aria-controls="loBody">
+        <span class="lo-head-text">
+          <span class="lo-ey">The conservative case</span>
+          <span class="lo-title">What this estimate leaves out</span>
+        </span>
+        <span class="lo-chev" id="loChev" aria-hidden="true">+</span>
+      </button>
+      <div class="lo-body" id="loBody">
+        <p class="lo-intro">The figures above are deliberately built low. These real costs are not counted, which means your true exposure is higher, not lower, than what is shown.</p>
+        <ul>
+          <li id="loPremium"><b>Premium impact.</b> Excluded.</li>
+          <li><b>The injured worker's own wages.</b> Carried by the workers compensation scheme during the absence, so not counted as your cost.</li>
+          <li><b>Knock-on turnover and team morale.</b> A claim or a departure often triggers others. Not modelled.</li>
+          <li><b>Legal, investigation and dispute costs.</b> Variable and excluded.</li>
+          <li><b>The median absence, not the average.</b> The longer mean would raise every claim figure. We use the shorter median.</li>
+          <li><b>Whole people, rounded down.</b> Preventable departures are counted as whole people and rounded down, never up.</li>
+        </ul>
+      </div>
     </div>
 
     <!-- CONTEXT LINE -->
@@ -306,7 +350,7 @@
       <ul>
         <li>Median time lost for a serious mental health claim, 35.7 working weeks, 2022-23. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.</li>
         <li>Contractor and labour-hire cost runs about 1.3 to 1.5 times the base wage once on-costs and margin are included. The model uses the conservative 1.5x. <a href="https://wiserecruitments.com.au/labour-hire-cost-australia-2026/" target="_blank" rel="noopener">Wise Recruitment, 2026</a>.</li>
-        <li>Management and return-to-work time, around 80 hours at $80 per hour, $6,500. Modelled GRACEX assumption based on claim-handling experience, not a published statistic.</li>
+        <li>Management and return-to-work time, around 80 hours at $80 per hour, $6,500. Modelled GraceX assumption based on claim-handling experience, not a published statistic.</li>
         <li>Productivity ramp is not given a dollar figure. For context only, technical and senior roles take 60 to 90 days to reach full productivity. <a href="https://www.allencomm.com/2026/04/successful-onboarding-time-to-productivity-early-performance-signals/" target="_blank" rel="noopener">Oxford Economics, cited in AllenComm, 2026</a>.</li>
       </ul>
 
@@ -327,7 +371,7 @@
 </main>
 
 <footer>
-  GRACEX &nbsp;&middot;&nbsp; Figures are estimates for discussion, not advice
+  GraceX &nbsp;&middot;&nbsp; Figures are estimates for discussion, not advice
 </footer>
 
 <script>
@@ -365,6 +409,13 @@
     if (staff <= 50) return 6500;
     if (staff <= 100) return 9500;
     return 14500;
+  }
+
+  function toggleLeftout() {
+    var b = document.getElementById('loBody');
+    var open = b.classList.toggle('show');
+    document.getElementById('loChev').textContent = open ? '\u2212' : '+';
+    document.getElementById('loHead').setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
   function toggleLB() {
@@ -421,18 +472,32 @@
       actualLine.style.display = 'none';
     }
 
+    // Early adopter sub-panel visibility
+    document.getElementById('eaSub').classList.toggle('show', pricing === 'ea');
+
     // Control cost
     var ongoing = staff * PRICE_PEM * 12;
     var ra = raCost(staff);
     var year1;
     if (pricing === 'ea') {
-      year1 = staff * PRICE_PEM * 6;
-      document.getElementById('costYear1Lbl').textContent = 'Year one \u00b7 first six months free, Assessment waived';
-      document.getElementById('ccWhy').textContent = 'Early adopter: the Readiness Assessment is complimentary and the first six months are free, then $30 per employee per month. Pricing shown is the GRACEX licence only.';
+      var freeMonths = parseInt(document.getElementById('freeMonths').value);
+      document.getElementById('freeMonthsVal').textContent = freeMonths;
+      var paidMonths = 12 - freeMonths;
+      var raVal = raCost(staff);
+      var moWord = (freeMonths === 1) ? 'month' : 'months';
+      year1 = staff * PRICE_PEM * paidMonths;
+      document.getElementById('raWaivedHint').textContent = 'Complimentary for early adopters. Standard value at this headcount: ' + fmtAUD(raVal) + '.';
+      if (freeMonths === 0) {
+        document.getElementById('costYear1Lbl').textContent = 'Year one \u00b7 Assessment waived, standard billing from month one';
+        document.getElementById('ccWhy').textContent = 'Early adopter: the Readiness Assessment is complimentary (standard value ' + fmtAUD(raVal) + ' at this headcount), then $30 per employee per month across the year. Pricing shown is the GraceX licence only.';
+      } else {
+        document.getElementById('costYear1Lbl').textContent = 'Year one \u00b7 first ' + freeMonths + ' ' + moWord + ' free, Assessment waived';
+        document.getElementById('ccWhy').textContent = 'Early adopter: the Readiness Assessment is complimentary (standard value ' + fmtAUD(raVal) + ' at this headcount) and the first ' + freeMonths + ' ' + moWord + ' are free, then $30 per employee per month for the remaining ' + paidMonths + '. Pricing shown is the GraceX licence only.';
+      }
     } else {
       year1 = ongoing + ra;
       document.getElementById('costYear1Lbl').textContent = 'Year one, licence plus Readiness Assessment (' + fmtAUD(ra) + ')';
-      document.getElementById('ccWhy').textContent = 'A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GRACEX licence and Assessment only.';
+      document.getElementById('ccWhy').textContent = 'A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GraceX licence and Assessment only.';
     }
     document.getElementById('costYear1').textContent   = fmtAUD(year1);
     document.getElementById('costOngoing').textContent = fmtAUD(ongoing);
