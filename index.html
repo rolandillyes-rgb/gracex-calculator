@@ -519,7 +519,67 @@
     document.getElementById('srcContext').innerHTML = s.srcContext;
   }
 
-  calc();
+  // ---- URL prefill ---------------------------------------------------
+  // Query parameters use the same names as the control ids, eg
+  //   ?state=vic&staff=42&salary=120000&departures=5&profile=0.80
+  // Unknown parameters are ignored. Invalid or out-of-range values are
+  // discarded and the control keeps its default. This never throws, so a
+  // mangled link degrades to the standard calculator rather than breaking.
+  function applyPrefill() {
+    var q;
+    try { q = new URLSearchParams(window.location.search); } catch (e) { return; }
+    if (!q) return;
+
+    // Some mail clients rewrite & as &amp;, which turns "staff" into "amp;staff".
+    // Normalise those back so a mangled link still resolves correctly.
+    try {
+      var fixed = new URLSearchParams();
+      q.forEach(function (v, k) { fixed.append(k.replace(/^amp;/i, ''), v); });
+      q = fixed;
+    } catch (e) { /* keep original q */ }
+
+    var RANGES  = ['staff','salary','departures','claims','freeMonths','gapWeeks','revMult'];
+    var SELECTS = ['state','profile','pricingSel'];
+
+    RANGES.forEach(function (id) {
+      if (!q.has(id)) return;
+      var el = document.getElementById(id); if (!el) return;
+      var v = parseFloat(q.get(id)); if (!isFinite(v)) return;
+      var min = parseFloat(el.min), max = parseFloat(el.max), step = parseFloat(el.step);
+      if (isFinite(min) && v < min) v = min;
+      if (isFinite(max) && v > max) v = max;
+      if (isFinite(step) && step > 0 && isFinite(min)) {
+        v = min + Math.round((v - min) / step) * step;
+      }
+      v = Math.round(v * 10000) / 10000;
+      el.value = String(v);
+    });
+
+    SELECTS.forEach(function (id) {
+      if (!q.has(id)) return;
+      var el = document.getElementById(id); if (!el) return;
+      var want = String(q.get(id)).trim().toLowerCase();
+      var i;
+      for (i = 0; i < el.options.length; i++) {
+        if (String(el.options[i].value).toLowerCase() === want) { el.selectedIndex = i; return; }
+      }
+      var wn = parseFloat(want);
+      if (!isFinite(wn)) return;
+      for (i = 0; i < el.options.length; i++) {
+        var on = parseFloat(el.options[i].value);
+        if (isFinite(on) && Math.abs(on - wn) < 1e-9) { el.selectedIndex = i; return; }
+      }
+    });
+
+    if (q.has('lbToggle')) {
+      var t = String(q.get('lbToggle')).trim().toLowerCase();
+      var el = document.getElementById('lbToggle');
+      if (el) el.checked = (t === '1' || t === 'true' || t === 'yes' || t === 'on');
+    }
+  }
+
+  applyPrefill();
+  toggleLB();
 </script>
 </body>
 </html>
