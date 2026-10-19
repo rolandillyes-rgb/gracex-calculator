@@ -4,38 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GraceX Psychosocial Risk Exposure Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<meta name="description" content="Estimate what psychosocial risk is already costing your organisation: voluntary turnover each year and the employer cost of one workers compensation psychological injury claim. Every figure carries its source.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calculator.gracex.io/">
+<meta property="og:title" content="GraceX Psychosocial Risk Exposure Calculator">
+<meta property="og:description" content="What psychosocial risk is already costing your organisation. Voluntary turnover each year, plus the employer cost of a single psychological injury claim. Every figure carries its source.">
+<meta property="og:locale" content="en_AU">
+<meta name="twitter:card" content="summary">
+<!-- Analytics: add the measurement tag here once a web analytics property exists for calculator.gracex.io -->
 <style>
+  @font-face { font-family: 'Creato Display'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/CreatoDisplay-Regular.otf') format('opentype'); }
+  @font-face { font-family: 'Creato Display'; font-style: italic; font-weight: 400; font-display: swap; src: url('fonts/CreatoDisplay-RegularItalic.otf') format('opentype'); }
+  @font-face { font-family: 'Creato Display'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/CreatoDisplay-Medium.otf') format('opentype'); }
+  @font-face { font-family: 'Creato Display'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/CreatoDisplay-Bold.otf') format('opentype'); }
   :root {
     --ivory:#EEEAE5; --sandstone:#A28B6E; --sky:#B4C9E6; --steel:#7E8FA6;
     --slate:#4D596A; --ivory-dim:#DDD9D3; --text:#1a1a1a; --danger:#9c3b35;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--ivory); color: var(--text); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Creato Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 400; background: var(--ivory); color: var(--text); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
 
   nav { background: var(--slate); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 52px; }
-  .nav-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 1rem; letter-spacing: 0.22em; color: var(--ivory); text-decoration: none; }
+  .nav-logo { display: block; text-decoration: none; }
+  .nav-logo img { height: 22px; display: block; }
   .nav-tag { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(238,234,229,0.55); }
 
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
 
   header.hero { background: var(--slate); padding: 46px 0 40px; }
   .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 14px; }
-  header.hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 2.5rem; line-height: 1.12; color: var(--ivory); font-weight: 400; margin-bottom: 18px; max-width: 760px; }
-  header.hero h1 em { font-style: italic; color: var(--sandstone); }
+  header.hero h1 { font-family: inherit; font-size: 2.5rem; line-height: 1.12; color: var(--ivory); font-weight: 400; margin-bottom: 18px; max-width: 760px; }
+  header.hero h1 em { font-style: italic; font-weight: 400; color: var(--sandstone); }
   .hero-sub { font-size: 0.98rem; color: rgba(238,234,229,0.78); max-width: 660px; line-height: 1.7; }
 
   main { padding: 40px 0 0; }
 
   .spine { background: #fff; border: 0.5px solid var(--ivory-dim); border-left: 3px solid var(--sandstone); border-radius: 8px; padding: 24px 28px; margin-bottom: 26px; }
-  .spine .sp-ey { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sandstone); font-weight: 600; margin-bottom: 10px; }
+  .spine .sp-ey { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 10px; }
   .spine p { font-size: 0.92rem; color: #3a3a3a; line-height: 1.72; }
   .spine b { color: var(--slate); font-weight: 500; }
 
   .panel { background: #fff; border: 0.5px solid var(--ivory-dim); border-radius: 8px; padding: 30px 30px 26px; margin-bottom: 26px; }
   .panel-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 6px; }
-  .panel h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: var(--slate); font-weight: 400; margin-bottom: 4px; }
+  .panel h2 { font-family: inherit; font-size: 1.4rem; color: var(--slate); font-weight: 400; margin-bottom: 4px; }
   .panel-help { font-size: 0.82rem; color: var(--steel); margin-bottom: 24px; }
 
   .state-row { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--ivory-dim); flex-wrap: wrap; }
@@ -43,10 +55,10 @@
 
   .input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 26px; }
   .field label { display: block; font-size: 0.74rem; color: var(--slate); font-weight: 500; margin-bottom: 7px; }
-  .field .field-val { font-family: 'Playfair Display', Georgia, serif; font-size: 1.25rem; color: var(--slate); font-weight: 400; }
+  .field .field-val { font-family: inherit; font-size: 1.2rem; color: var(--slate); font-weight: 500; }
   .field input[type=range] { width: 100%; accent-color: var(--slate); margin-top: 6px; }
   .field-limits { display: flex; justify-content: space-between; font-size: 0.6rem; color: #b0aaa2; margin-top: 3px; }
-  .field select, .field input[type=number] { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); border: 0.5px solid var(--ivory-dim); border-radius: 5px; padding: 9px 11px; background: var(--ivory); margin-top: 4px; }
+  .field select, .field input[type=number] { width: 100%; font-family: inherit; font-size: 0.9rem; color: var(--text); border: 0.5px solid var(--ivory-dim); border-radius: 5px; padding: 9px 11px; background: var(--ivory); margin-top: 4px; }
   .field-hint { font-size: 0.66rem; color: var(--steel); margin-top: 6px; line-height: 1.45; }
 
   .opt-toggle { display: flex; align-items: center; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--ivory-dim); }
@@ -57,35 +69,35 @@
 
   .headline { background: var(--slate); border-radius: 8px; padding: 34px 32px; margin-bottom: 26px; color: var(--ivory); }
   .headline .hl-label { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 14px; }
-  .headline .hl-main { font-family: 'Playfair Display', Georgia, serif; font-size: 1.65rem; line-height: 1.34; font-weight: 400; max-width: 780px; }
-  .headline .hl-main b { color: var(--sandstone); font-weight: 600; font-style: italic; }
+  .headline .hl-main { font-family: inherit; font-size: 1.65rem; line-height: 1.34; font-weight: 400; max-width: 780px; }
+  .headline .hl-main b { color: var(--sandstone); font-weight: 700; font-style: normal; }
   .headline .hl-foot { font-size: 0.72rem; color: rgba(238,234,229,0.5); margin-top: 16px; max-width: 720px; }
 
   .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
   .rcard { background: #fff; border: 0.5px solid var(--ivory-dim); border-radius: 8px; padding: 26px 26px 22px; }
   .rcard .rc-ey { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 12px; }
-  .rcard .rc-big { font-family: 'Playfair Display', Georgia, serif; font-size: 2.1rem; color: var(--slate); font-weight: 400; line-height: 1.05; }
+  .rcard .rc-big { font-family: inherit; font-size: 2.1rem; color: var(--slate); font-weight: 500; line-height: 1.05; }
   .rcard .rc-cap { font-size: 0.78rem; color: var(--steel); margin-top: 6px; line-height: 1.5; }
   .why { margin-top: 13px; font-size: 0.74rem; color: #4a4a4a; line-height: 1.55; }
-  .why span { display: block; color: var(--sandstone); font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.58rem; margin-bottom: 3px; }
+  .why span { display: block; color: var(--sandstone); font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.58rem; margin-bottom: 3px; }
   .rc-line { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--ivory-dim); font-size: 0.86rem; }
   .rc-lines { margin-top: 16px; }
   .rc-line:first-child { border-top: none; }
-  .rc-line .lbl { color: #333; font-weight: 300; padding-right: 14px; }
+  .rc-line .lbl { color: #333; font-weight: 400; padding-right: 14px; }
   .rc-line .val { font-weight: 500; color: var(--slate); white-space: nowrap; }
   .rc-line .val.danger { color: var(--danger); }
   .rc-sub { font-size: 0.7rem; color: var(--steel); margin-top: 12px; line-height: 1.5; }
 
   .control-card { background: var(--ivory-dim); border-radius: 8px; padding: 26px; margin-top: 22px; }
-  .control-card .cc-ey { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sandstone); font-weight: 600; margin-bottom: 14px; }
+  .control-card .cc-ey { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 14px; }
   .cc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .cc-col .cc-num { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; color: var(--slate); font-weight: 400; }
+  .cc-col .cc-num { font-family: inherit; font-size: 1.7rem; color: var(--slate); font-weight: 500; }
   .cc-col .cc-lbl { font-size: 0.74rem; color: var(--steel); margin-top: 4px; line-height: 1.45; }
   .cc-why { font-size: 0.72rem; color: #5a5e63; margin-top: 16px; padding-top: 14px; border-top: 1px solid #cfcac3; line-height: 1.55; }
 
   .leftout { background: #fff; border: 0.5px solid var(--ivory-dim); border-radius: 8px; padding: 30px 32px; margin-top: 26px; }
-  .leftout .lo-ey { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 600; margin-bottom: 6px; }
-  .leftout h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: var(--slate); font-weight: 400; margin-bottom: 6px; }
+  .leftout .lo-ey { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 6px; }
+  .leftout h2 { font-family: inherit; font-size: 1.4rem; color: var(--slate); font-weight: 400; margin-bottom: 6px; }
   .leftout .lo-intro { font-size: 0.84rem; color: var(--steel); margin-bottom: 18px; line-height: 1.6; max-width: 660px; }
   .leftout ul { list-style: none; }
   .leftout li { padding: 11px 0 11px 20px; position: relative; font-size: 0.84rem; color: #3a3a3a; border-top: 1px solid var(--ivory-dim); line-height: 1.6; }
@@ -98,7 +110,7 @@
 
   .sources { background: var(--slate); border-radius: 8px; padding: 30px 32px; color: var(--ivory); margin: 30px 0 40px; }
   .sources .src-ey { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sandstone); font-weight: 500; margin-bottom: 16px; }
-  .sources h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: 1.02rem; color: var(--ivory); margin: 16px 0 8px; }
+  .sources h3 { font-family: inherit; font-weight: 500; font-size: 1.02rem; color: var(--ivory); margin: 16px 0 8px; }
   .sources p, .sources li { font-size: 0.76rem; color: rgba(238,234,229,0.74); line-height: 1.6; }
   .sources ul { list-style: none; }
   .sources li { padding: 6px 0 6px 16px; position: relative; }
@@ -120,17 +132,31 @@
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   /* pricing pick */
   .pricing-pick { background:#fff; border:0.5px solid var(--ivory-dim); border-left:3px solid var(--sandstone); border-radius:8px; padding:20px 24px; margin-top:24px; }
-  .pricing-pick .pp-instruct { font-size:0.82rem; color:var(--slate); font-weight:600; margin-bottom:14px; letter-spacing:0.01em; }
+  .pricing-pick .pp-instruct { font-size:0.82rem; color:var(--slate); font-weight:500; margin-bottom:14px; letter-spacing:0.01em; }
   .pricing-pick .pp-row { display:flex; align-items:flex-end; gap:22px; flex-wrap:wrap; }
   .pricing-pick .pp-field { min-width:240px; }
   .pricing-pick .pp-hint { flex:1 1 280px; min-width:240px; align-self:center; }
 
   .opt-hint { font-size:0.74rem; color:var(--steel); line-height:1.55; margin-top:10px; padding-left:26px; max-width:760px; }
 
+  /* staff number box */
+  .staff-row { display:flex; align-items:center; gap:12px; margin-top:6px; }
+  .staff-row input[type=range] { flex:1; margin-top:0; }
+  .staff-row input[type=number] { width:72px; margin-top:0; padding:6px 8px; font-size:1.05rem; font-weight:500; color:var(--slate); text-align:center; -moz-appearance:textfield; }
+  .staff-row + .field-limits { padding-right: 84px; }
+  .staff-row input[type=number]::-webkit-outer-spin-button, .staff-row input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  /* GraceX cost block, shown only when the checkbox is on */
+  .cost-block { display:none; }
+  .cost-block.show { display:block; }
+  .control-card { display:none; }
+  .control-card.show { display:block; }
+  .ctrl-only { display:none; }
+  .ctrl-only.show { display:inline; }
+
   /* leftout accordion */
   .lo-head { width:100%; display:flex; align-items:center; justify-content:space-between; gap:18px; background:none; border:none; padding:0; cursor:pointer; text-align:left; font-family:inherit; }
-  .lo-title { display:block; font-family:'Playfair Display', Georgia, serif; font-size:1.4rem; color:var(--slate); font-weight:400; margin-top:4px; }
-  .lo-chev { font-family:'DM Sans', sans-serif; font-size:1.6rem; color:var(--sandstone); font-weight:300; line-height:1; flex-shrink:0; }
+  .lo-title { display:block; font-family:inherit; font-size:1.4rem; color:var(--slate); font-weight:400; margin-top:4px; }
+  .lo-chev { font-family:inherit; font-size:1.6rem; color:var(--sandstone); font-weight:400; line-height:1; flex-shrink:0; }
   .lo-body { display:none; margin-top:18px; }
   .lo-body.show { display:block; }
 
@@ -139,7 +165,7 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">GraceX</a>
+  <a class="nav-logo" href="#"><img src="data:image/png;base64,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" alt="GraceX"></a>
   <span class="nav-tag">Psychosocial Risk Exposure</span>
 </nav>
 
@@ -157,7 +183,7 @@
     <!-- SPINE -->
     <div class="spine">
       <div class="sp-ey">How to read this</div>
-      <p>Here is how to read what follows. The first number is what voluntary turnover is already costing your organisation each year. The second is what a single psychological injury claim would add, should one occur. The third is what it costs to put a control in place against both. <b>Every figure carries its source, and a short panel near the end sets out what the estimate deliberately leaves out, so you can see exactly how it was built.</b></p>
+      <p>Here is how to read what follows. The first number is what voluntary turnover is already costing your organisation each year. The second is what a single psychological injury claim would add, should one occur. <span class="ctrl-only" id="spineCtrl">The third is what it costs to put a control in place against both. </span><b>Every figure carries its source, and a short panel near the end sets out what the estimate deliberately leaves out, so you can see exactly how it was built.</b></p>
     </div>
 
     <!-- INPUTS -->
@@ -180,13 +206,17 @@
 
       <div class="input-grid">
         <div class="field">
-          <label for="staff">Staff in scope <span class="field-val" id="staffVal">45</span></label>
-          <input type="range" id="staff" min="20" max="200" step="1" value="45" oninput="calc()">
-          <div class="field-limits"><span>20</span><span>200</span></div>
+          <label for="staff">Staff in scope</label>
+          <div class="staff-row">
+            <input type="range" id="staff" min="1" max="200" step="1" value="42" oninput="syncStaff('range')" aria-label="Staff in scope, slider">
+            <input type="number" id="staffNum" min="1" max="200" step="1" value="42" inputmode="numeric" oninput="syncStaff('number')" aria-label="Staff in scope, type a number">
+          </div>
+          <div class="field-limits"><span>1</span><span>200</span></div>
+          <div class="field-hint">Slide, or type the headcount.</div>
         </div>
         <div class="field">
           <label for="salary">Average annual salary <span class="field-val" id="salaryVal">$110,000</span></label>
-          <input type="range" id="salary" min="55000" max="220000" step="5000" value="110000" oninput="calc()">
+          <input type="range" id="salary" min="55000" max="220000" step="500" value="110000" oninput="calc()">
           <div class="field-limits"><span>$55k</span><span>$220k</span></div>
         </div>
         <div class="field">
@@ -199,8 +229,8 @@
           <div class="field-hint">Sets the turnover replacement rate, per Gallup's role tiers.</div>
         </div>
         <div class="field">
-          <label for="departures">Voluntary departures, last 12 months <span class="field-val" id="departuresVal">6</span></label>
-          <input type="range" id="departures" min="0" max="60" step="1" value="6" oninput="calc()">
+          <label for="departures">Voluntary departures, last 12 months <span class="field-val" id="departuresVal">3</span></label>
+          <input type="range" id="departures" min="0" max="60" step="1" value="3" oninput="calc()">
           <div class="field-limits"><span>0</span><span>60</span></div>
         </div>
         <div class="field">
@@ -209,9 +239,40 @@
           <div class="field-limits"><span>0</span><span>8</span></div>
           <div class="field-hint">Leave at zero to model the cost should a first claim occur.</div>
         </div>
+        <div class="field">
+          <label for="absentSalary">Salary of the person absent <span class="field-val" id="absentSalaryVal">$110,000</span></label>
+          <input type="range" id="absentSalary" min="55000" max="220000" step="500" value="110000" oninput="absentTouched = true; calc()">
+          <div class="field-limits"><span>$55k</span><span>$220k</span></div>
+          <div class="field-hint">Drives the claim cost. Follows the average salary until you change it, so you can model a senior person being the one who is off.</div>
+        </div>
       </div>
 
-      <div class="pricing-pick">
+      <div class="opt-toggle">
+        <input type="checkbox" id="lbToggle" onchange="toggleLB()">
+        <label for="lbToggle">Include lost billable revenue (fee-earning firms only)</label>
+      </div>
+      <p class="opt-hint">For firms whose people bill their time, such as recruiters, agencies, consultancies and professional services. When a fee-earner is off, the role often sits uncovered for a period before a contractor starts, and that gap is revenue the business does not recover. Switch this on to add it. It counts only the uncovered gap, so it does not double count with the contractor backfill.</p>
+      <div class="opt-sub" id="lbSub">
+        <div class="field">
+          <label for="gapWeeks">Weeks the role is uncovered before a contractor starts <span class="field-val" id="gapWeeksVal">3</span></label>
+          <input type="range" id="gapWeeks" min="1" max="8" step="1" value="3" oninput="calc()">
+          <div class="field-limits"><span>1</span><span>8</span></div>
+        </div>
+        <div class="field">
+          <label for="revMult">Revenue per fee-earner, as a multiple of salary <span class="field-val" id="revMultVal">2.5x</span></label>
+          <input type="range" id="revMult" min="1.5" max="3.5" step="0.1" value="2.5" oninput="calc()">
+          <div class="field-limits"><span>1.5x</span><span>3.5x</span></div>
+          <div class="field-hint">Counts only the uncovered gap, so it does not double count with the contractor backfill.</div>
+        </div>
+      </div>
+
+      <div class="opt-toggle">
+        <input type="checkbox" id="costToggle" onchange="toggleCost()">
+        <label for="costToggle">Show the GraceX control cost</label>
+      </div>
+      <p class="opt-hint">Off by default so the exposure figures stand on their own. Switch this on to compare the exposure against the cost of putting the GraceX control in place.</p>
+      <div class="cost-block" id="costBlock">
+      <div class="pricing-pick" style="margin-top:16px;">
         <div class="pp-instruct">Select the pricing that applies to you. Early adopter reveals the introductory terms below.</div>
         <div class="pp-row">
           <div class="field pp-field">
@@ -238,31 +299,13 @@
           <div class="field-hint" id="raWaivedHint">Complimentary for early adopters.</div>
         </div>
       </div>
-
-      <div class="opt-toggle">
-        <input type="checkbox" id="lbToggle" onchange="toggleLB()">
-        <label for="lbToggle">Include lost billable revenue (fee-earning firms only)</label>
-      </div>
-      <p class="opt-hint">For firms whose people bill their time, such as recruiters, agencies, consultancies and professional services. When a fee-earner is off, the role often sits uncovered for a period before a contractor starts, and that gap is revenue the business does not recover. Switch this on to add it. It counts only the uncovered gap, so it does not double count with the contractor backfill.</p>
-      <div class="opt-sub" id="lbSub">
-        <div class="field">
-          <label for="gapWeeks">Weeks the role is uncovered before a contractor starts <span class="field-val" id="gapWeeksVal">3</span></label>
-          <input type="range" id="gapWeeks" min="1" max="8" step="1" value="3" oninput="calc()">
-          <div class="field-limits"><span>1</span><span>8</span></div>
-        </div>
-        <div class="field">
-          <label for="revMult">Revenue per fee-earner, as a multiple of salary <span class="field-val" id="revMultVal">2.5x</span></label>
-          <input type="range" id="revMult" min="1.5" max="3.5" step="0.1" value="2.5" oninput="calc()">
-          <div class="field-limits"><span>1.5x</span><span>3.5x</span></div>
-          <div class="field-hint">Counts only the uncovered gap, so it does not double count with the contractor backfill.</div>
-        </div>
       </div>
     </section>
 
     <!-- HEADLINE -->
     <div class="headline">
       <div class="hl-label">What one claim costs you</div>
-      <div class="hl-main">A single psychological injury claim costs your business about <b id="hlClaim">$119,779</b>. That is roughly <b id="hlYears">7 years</b> of the GraceX control at standard price for your headcount.</div>
+      <div class="hl-main">A single psychological injury claim costs your business about <b id="hlClaim">$116,923</b>.<span class="ctrl-only" id="hlCtrl"> That is roughly <b>8 years</b> of the GraceX control at standard price for your headcount.</span></div>
       <div class="hl-foot" id="hlFoot">Employer cost only, built from contractor backfill over the median absence plus internal management time. Premium impact is excluded and explained below.</div>
     </div>
 
@@ -270,22 +313,22 @@
     <div class="results-grid">
       <div class="rcard">
         <div class="rc-ey">Exposure 1 &nbsp;/&nbsp; Recurring, each year</div>
-        <div class="rc-big" id="turnoverVal">$528,000</div>
+        <div class="rc-big" id="turnoverVal">$264,000</div>
         <div class="rc-cap">Annual economic cost of replacing voluntary leavers. This is the full cost including lost productivity and ramp, not only recruitment spend.</div>
         <div class="why"><span>Why this number</span>Your departures multiplied by Gallup's replacement rate for the workforce profile you chose. Technical and professional roles replace at 80% of salary, which is why the figure is larger than a recruitment invoice.</div>
         <div class="rc-lines">
-          <div class="rc-line"><span class="lbl" id="preventableLbl">Preventable (Gallup 42%): 2 of 6 departures</span><span class="val" id="preventableVal">$176,000</span></div>
+          <div class="rc-line"><span class="lbl" id="preventableLbl">Preventable (Gallup 42%): 1 of 3 departures</span><span class="val" id="preventableVal">$88,000</span></div>
         </div>
         <p class="rc-sub">Gallup finds 42% of employees who left voluntarily say their departure could have been prevented through earlier management action. Applied as whole people and rounded down, so it never overstates. An industry finding on what is addressable, not a figure GraceX guarantees to recover.</p>
       </div>
 
       <div class="rcard">
         <div class="rc-ey">Exposure 2 &nbsp;/&nbsp; Per claim, if one occurs</div>
-        <div class="rc-big" id="claimTotalVal">$119,779</div>
+        <div class="rc-big" id="claimTotalVal">$116,923</div>
         <div class="rc-cap">Employer cost should a single psychological injury claim occur.</div>
-        <div class="why"><span>Why this number</span>The injured worker's wages are carried by the scheme, so this counts only what it costs you to cover the role: a contractor at a market rate over the median absence, plus your own management and return-to-work time. Premium is excluded.</div>
+        <div class="why"><span>Why this number</span>The injured worker's wages are carried by the scheme, so this counts only what it costs you to cover the role: a contractor at a market rate over the median absence, built on the salary of the person absent, plus your own management and return-to-work time. Premium is excluded.</div>
         <div class="rc-lines">
-          <div class="rc-line"><span class="lbl">Contractor backfill (1.5x salary, 35.7 weeks)</span><span class="val danger" id="contractorVal">$113,279</span></div>
+          <div class="rc-line"><span class="lbl">Contractor backfill (1.5x salary, 34.8 weeks)</span><span class="val danger" id="contractorVal">$110,423</span></div>
           <div class="rc-line"><span class="lbl">Management and return-to-work time</span><span class="val danger" id="mgmtVal">$6,500</span></div>
           <div class="rc-line" id="lbLine" style="display:none;"><span class="lbl">Lost billable revenue (uncovered gap)</span><span class="val danger" id="lbVal">$0</span></div>
           <div class="rc-line" id="claimsActualLine" style="display:none;"><span class="lbl" id="claimsActualLbl">Realised claims</span><span class="val danger" id="claimsActualVal">$0</span></div>
@@ -295,19 +338,19 @@
     </div>
 
     <!-- CONTROL COST -->
-    <div class="control-card">
+    <div class="control-card" id="controlCard">
       <div class="cc-ey">The control &nbsp;/&nbsp; GraceX cost</div>
       <div class="cc-cols">
         <div class="cc-col">
-          <div class="cc-num" id="costYear1">$22,700</div>
+          <div class="cc-num" id="costYear1">$21,620</div>
           <div class="cc-lbl" id="costYear1Lbl">Year one, licence plus Readiness Assessment</div>
         </div>
         <div class="cc-col">
-          <div class="cc-num" id="costOngoing">$16,200</div>
+          <div class="cc-num" id="costOngoing">$15,120</div>
           <div class="cc-lbl">Each year ongoing &middot; $30 per employee per month</div>
         </div>
       </div>
-      <div class="cc-why" id="ccWhy">A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GraceX licence and Assessment only.</div>
+      <div class="cc-why" id="ccWhy">A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for up to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GraceX licence and Assessment only.</div>
     </div>
 
     <!-- WHAT WE LEFT OUT -->
@@ -334,7 +377,7 @@
 
     <!-- CONTEXT LINE -->
     <div class="context-line" id="contextLine">
-      For reference, the NSW scheme pays an average of <b>$288,542</b> on a psychological injury claim. That is the insurer's cost, not yours. The figure above is your own modelled cost as the employer, which is why it is lower and built from items you actually pay. NSW reforms apply a tightened eligibility test to psychological injuries first reported on or after 1 July 2026. The scheme average above predates those changes.
+      For reference, the NSW scheme pays an average of <b>$288,542</b> on a psychological injury claim. That is the insurer's cost, not yours. The figure above is your own modelled cost as the employer, which is why it is lower and built from items you actually pay. NSW reforms apply a tightened eligibility test to psychological injuries first reported on or after 1 July 2026. The scheme average above predates those changes. Nationally, the median compensation for a serious mental health condition claim is <b>$68,600</b>, against $16,100 for all other serious claims.
     </div>
 
     <!-- SOURCES -->
@@ -348,7 +391,7 @@
 
       <h3>Employer claim cost (Exposure 2)</h3>
       <ul>
-        <li>Median time lost for a serious mental health claim, 35.7 working weeks, 2022-23. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.</li>
+        <li>Median time lost for a serious mental health condition claim, 34.8 working weeks in 2023-24, against 7.0 weeks for all other serious claims. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2026</a>, released October 2026.</li>
         <li>Temporary cover bills above the base wage: casual loading alone adds 25% (<a href="https://fairworkmate.com.au/blog/casual-vs-permanent-which-pays-more" target="_blank" rel="noopener">FairWork Mate, 2026</a>), and agency markup adds a further 15 to 30%, taking the billable rate to roughly 125% to 155% of the base (<a href="https://avirelle.com.au/the-true-cost-of-temp-staff-in-sydney-your-2026-decision-guide/" target="_blank" rel="noopener">Avirelle Staffing, 2026</a>). The model uses 1.5x.</li>
         <li>Management and return-to-work time, around 80 hours at $80 per hour, $6,500. Modelled GraceX assumption based on claim-handling experience, not a published statistic.</li>
         <li>Productivity ramp is not given a dollar figure. For context only, technical and senior roles take 60 to 90 days to reach full productivity. <a href="https://www.allencomm.com/2026/04/successful-onboarding-time-to-productivity-early-performance-signals/" target="_blank" rel="noopener">AllenComm, 2026</a>.</li>
@@ -364,7 +407,7 @@
         <li id="srcContext"></li>
       </ul>
 
-      <p class="disclaimer">General information, not financial or legal advice. Verify any figure against its source before relying on it. Replacement, contractor and management figures are modelled, and the result is an estimate of exposure, not a guarantee of cost or saving.</p>
+      <p class="disclaimer">General information, not financial or legal advice. Verify any figure against its source before relying on it. Replacement, contractor and management figures are modelled, and the result is an estimate of exposure, not a guarantee of cost or saving. Figures checked against their sources on 19 October 2026.</p>
     </div>
 
   </div>
@@ -376,30 +419,32 @@
 
 <script>
   var GALLUP_PREVENTABLE = 0.42;
-  var ABSENCE_WEEKS = 35.7;
+  var ABSENCE_WEEKS = 34.8;
   var CONTRACTOR_MULT = 1.5;
   var MGMT = 6500;
   var PRICE_PEM = 30;
   var lbOn = false;
+  var costOn = false;
+  var absentTouched = false;
 
   var STATES = {
     nsw: {
       leftout: '<b>Premium impact.</b> Excluded. Under icare NSW rules, employers with an average performance premium of $30,000 or less are not directly affected by claim costs, although eligibility for the Safe Employer Reward discount may be. Above that, premium increases are capped at 25% for policies from 30 June 2026, and there is no published figure for one claim on one employer.',
       src: 'Under icare NSW rules, employers with an average performance premium of $30,000 or less are small employers whose premium is not directly affected by claim costs. Above that threshold a claim can affect premium through the Claims Performance Rate, with premium-increase capping reduced from 30% to 25% for policies from 30 June 2026. <a href="https://www.icare.nsw.gov.au/workers-compensation/employers/how-much-will-it-cost" target="_blank" rel="noopener">icare NSW</a> and <a href="https://www.icare.nsw.gov.au/workers-compensation/employers/new-policy/understanding-your-premium" target="_blank" rel="noopener">Understanding your premium</a>.',
-      context: 'For reference, the NSW scheme pays an average of <b>$288,542</b> on a psychological injury claim. That is the insurer\u2019s cost, not yours. The figure above is your own modelled cost as the employer, which is why it is lower and built from items you actually pay. NSW reforms apply a tightened eligibility test to psychological injuries first reported on or after 1 July 2026. The scheme average above predates those changes.',
-      srcContext: 'NSW average cost of a psychological injury claim, $288,542 in 2024-25. NSW Treasurer, Workers Compensation Ministerial Statement, 18 March 2025. <a href="https://www.nsw.gov.au/ministerial-releases/workers-compensation-reform-to-address-psychological-safety" target="_blank" rel="noopener">NSW Government</a>. Eligibility test for injuries first reported on or after 1 July 2026: <a href="https://www.icare.nsw.gov.au/injured-or-ill-people/workplace-injuries/make-a-claim/psychological-injuries" target="_blank" rel="noopener">icare, Psychological injury claims</a>.'
+      context: 'For reference, the NSW scheme pays an average of <b>$288,542</b> on a psychological injury claim. That is the insurer\u2019s cost, not yours. The figure above is your own modelled cost as the employer, which is why it is lower and built from items you actually pay. NSW reforms apply a tightened eligibility test to psychological injuries first reported on or after 1 July 2026. The scheme average above predates those changes. Nationally, the median compensation for a serious mental health condition claim is <b>$68,600</b>, against $16,100 for all other serious claims.',
+      srcContext: 'National median compensation for a serious mental health condition claim, $68,600 in 2023-24, against $16,100 for all other serious claims. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2026</a>. NSW average cost of a psychological injury claim, $288,542 in 2024-25. NSW Treasurer, Workers Compensation Ministerial Statement, 18 March 2025. <a href="https://www.nsw.gov.au/ministerial-releases/workers-compensation-reform-to-address-psychological-safety" target="_blank" rel="noopener">NSW Government</a>. Eligibility test for injuries first reported on or after 1 July 2026: <a href="https://www.icare.nsw.gov.au/injured-or-ill-people/workplace-injuries/make-a-claim/psychological-injuries" target="_blank" rel="noopener">icare, Psychological injury claims</a>.'
     },
     vic: {
       leftout: '<b>Premium impact.</b> Excluded. Under WorkSafe Victoria rules, employers with rateable remuneration of $200,000 or less are not affected by claim costs. Above that, premium-rate increases are capped at 30% a year, and there is no published figure for one claim on one employer.',
       src: 'Under WorkSafe Victoria rules, employers with rateable remuneration of $200,000 or less are small employers whose premium is not affected by claim costs. Above that threshold a claim can affect the premium rate through claims experience, with year-on-year premium-rate increases capped at 30%. <a href="https://www.worksafe.vic.gov.au/previous-claims-your-premium" target="_blank" rel="noopener">WorkSafe Victoria</a> and <a href="https://www.worksafe.vic.gov.au/capping-how-it-affects-your-premium" target="_blank" rel="noopener">premium capping</a>.',
-      context: 'For reference, the national median compensation for a serious mental health claim is <b>$67,400</b>. Victoria does not publish a separate scheme average, so the national median is shown. That is the scheme\u2019s cost, not yours. The figure above is your own modelled cost as the employer.',
-      srcContext: 'National median compensation for a serious mental health claim, $67,400, 2022-23. Victoria does not publish a separate scheme average. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.'
+      context: 'For reference, the national median compensation for a serious mental health condition claim is <b>$68,600</b>, against $16,100 for all other serious claims. Victoria does not publish a separate scheme average, so the national median is shown. That is the scheme\u2019s cost, not yours. The figure above is your own modelled cost as the employer.',
+      srcContext: 'National median compensation for a serious mental health condition claim, $68,600 in 2023-24, against $16,100 for all other serious claims. Victoria does not publish a separate scheme average. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2026</a>.'
     },
     nat: {
       leftout: '<b>Premium impact.</b> Excluded. Workers compensation premiums are experience-rated for larger employers and capped year on year, while small employers are industry-rated and not directly affected by individual claims. Thresholds and caps vary by state.',
       src: 'Workers compensation premiums are experience-rated for larger employers and capped year on year, while small employers are industry-rated and not directly affected by individual claims. Thresholds, caps and terms vary by state. There is no published figure for the premium effect of a single psychological injury claim on one employer. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia</a>.',
-      context: 'For reference, the national median compensation for a serious mental health claim is <b>$67,400</b>. That is the scheme\u2019s cost, not yours. The figure above is your own modelled cost as the employer, built from items you actually pay.',
-      srcContext: 'National median compensation for a serious mental health claim, $67,400, 2022-23. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2025</a>.'
+      context: 'For reference, the national median compensation for a serious mental health condition claim is <b>$68,600</b>, against $16,100 for all other serious claims. That is the scheme\u2019s cost, not yours. The figure above is your own modelled cost as the employer, built from items you actually pay.',
+      srcContext: 'National median compensation for a serious mental health condition claim, $68,600 in 2023-24, against $16,100 for all other serious claims. <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Safe Work Australia, Key Work Health and Safety Statistics Australia 2026</a>.'
     }
   };
 
@@ -418,6 +463,28 @@
     document.getElementById('loHead').setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
+  function syncStaff(from) {
+    var r = document.getElementById('staff'), n = document.getElementById('staffNum');
+    if (from === 'number') {
+      var v = parseInt(n.value);
+      if (!isFinite(v)) return;
+      if (v < 1) v = 1; if (v > 200) v = 200;
+      r.value = String(v);
+    } else {
+      n.value = r.value;
+    }
+    calc();
+  }
+
+  function toggleCost() {
+    costOn = document.getElementById('costToggle').checked;
+    document.getElementById('costBlock').classList.toggle('show', costOn);
+    document.getElementById('controlCard').classList.toggle('show', costOn);
+    document.getElementById('hlCtrl').classList.toggle('show', costOn);
+    document.getElementById('spineCtrl').classList.toggle('show', costOn);
+    calc();
+  }
+
   function toggleLB() {
     lbOn = document.getElementById('lbToggle').checked;
     document.getElementById('lbSub').classList.toggle('show', lbOn);
@@ -428,6 +495,8 @@
   function calc() {
     var staff   = parseInt(document.getElementById('staff').value);
     var salary  = parseInt(document.getElementById('salary').value);
+    if (!absentTouched) document.getElementById('absentSalary').value = String(salary);
+    var absent  = parseInt(document.getElementById('absentSalary').value);
     var repRate = parseFloat(document.getElementById('profile').value);
     var deps    = parseInt(document.getElementById('departures').value);
     var claims  = parseInt(document.getElementById('claims').value);
@@ -436,8 +505,9 @@
     var gapWeeks= parseInt(document.getElementById('gapWeeks').value);
     var revMult = parseFloat(document.getElementById('revMult').value);
 
-    document.getElementById('staffVal').textContent      = staff;
+    document.getElementById('staffNum').value            = staff;
     document.getElementById('salaryVal').textContent     = fmtAUD(salary);
+    document.getElementById('absentSalaryVal').textContent = fmtAUD(absent);
     document.getElementById('departuresVal').textContent = deps;
     document.getElementById('claimsVal').textContent     = claims;
     document.getElementById('gapWeeksVal').textContent   = gapWeeks;
@@ -454,8 +524,8 @@
     document.getElementById('preventableVal').textContent = fmtAUD(preventable);
 
     // Exposure 2: single claim, employer cost (contractor scenario)
-    var contractor = salary * CONTRACTOR_MULT * (ABSENCE_WEEKS / 52);
-    var lostBill   = lbOn ? (revMult * salary / 52) * gapWeeks : 0;
+    var contractor = absent * CONTRACTOR_MULT * (ABSENCE_WEEKS / 52);
+    var lostBill   = lbOn ? (revMult * absent / 52) * gapWeeks : 0;
     var singleClaim = contractor + MGMT + lostBill;
     document.getElementById('contractorVal').textContent = fmtAUD(contractor);
     document.getElementById('mgmtVal').textContent       = fmtAUD(MGMT);
@@ -497,19 +567,31 @@
     } else {
       year1 = ongoing + ra;
       document.getElementById('costYear1Lbl').textContent = 'Year one, licence plus Readiness Assessment (' + fmtAUD(ra) + ')';
-      document.getElementById('ccWhy').textContent = 'A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for 20 to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GraceX licence and Assessment only.';
+      document.getElementById('ccWhy').textContent = 'A flat price per employee each month, plus a one-off Readiness Assessment in year one, tiered by headcount: $6,500 for up to 50 staff, $9,500 for 51 to 100, $14,500 for 101 to 200. Pricing shown is the GraceX licence and Assessment only.';
     }
     document.getElementById('costYear1').textContent   = fmtAUD(year1);
     document.getElementById('costOngoing').textContent = fmtAUD(ongoing);
 
     // Headline
     var years = ongoing > 0 ? (singleClaim / ongoing) : 0;
+    var yearsTxt = (years >= 1 ? Math.round(years) : years.toFixed(1)) + ' years';
     document.getElementById('hlClaim').textContent = fmtAUD(singleClaim);
-    document.getElementById('hlYears').textContent = (years >= 1 ? Math.round(years) : years.toFixed(1)) + ' years';
+    var hl;
+    if (pricing === 'ea' && year1 > 0) {
+      var mult = singleClaim / year1;
+      var multTxt = (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + ' times';
+      hl = ' That is <b>' + multTxt + '</b> your first-year cost as an early adopter, and roughly <b>' + yearsTxt + '</b> of the control at standard price.';
+    } else if (pricing === 'ea') {
+      hl = ' Your first year as an early adopter costs nothing, and the claim is roughly <b>' + yearsTxt + '</b> of the control at standard price.';
+    } else {
+      hl = ' That is roughly <b>' + yearsTxt + '</b> of the GraceX control at standard price for your headcount.';
+    }
+    document.getElementById('hlCtrl').innerHTML = hl;
     document.getElementById('hlFoot').textContent =
-      'Employer cost only, built from contractor backfill over the 35.7-week median absence plus management time' +
+      'Employer cost only, built from contractor backfill over the 34.8-week median absence plus management time' +
       (lbOn ? ' and the uncovered billing gap' : '') +
-      '. Premium impact is excluded and explained below. Compared against $30 per employee per month for ' + staff + ' staff.';
+      '. Premium impact is excluded and explained below.' +
+      (costOn ? ' Compared against $30 per employee per month for ' + staff + ' staff.' : '');
 
     // State-specific blocks
     var s = STATES[st];
@@ -521,7 +603,7 @@
 
   // ---- URL prefill ---------------------------------------------------
   // Query parameters use the same names as the control ids, eg
-  //   ?state=vic&staff=42&salary=120000&departures=5&profile=0.80
+  //   ?state=vic&staff=42&salary=120000&absentSalary=150000&departures=5&profile=0.80&lbToggle=1&cost=1
   // Unknown parameters are ignored. Invalid or out-of-range values are
   // discarded and the control keeps its default. This never throws, so a
   // mangled link degrades to the standard calculator rather than breaking.
@@ -538,7 +620,8 @@
       q = fixed;
     } catch (e) { /* keep original q */ }
 
-    var RANGES  = ['staff','salary','departures','claims','freeMonths','gapWeeks','revMult'];
+    var RANGES  = ['staff','salary','absentSalary','departures','claims','freeMonths','gapWeeks','revMult'];
+    if (q.has('absentSalary')) absentTouched = true;
     var SELECTS = ['state','profile','pricingSel'];
 
     RANGES.forEach(function (id) {
@@ -576,9 +659,17 @@
       var el = document.getElementById('lbToggle');
       if (el) el.checked = (t === '1' || t === 'true' || t === 'yes' || t === 'on');
     }
+    var ck = q.has('cost') ? 'cost' : (q.has('costToggle') ? 'costToggle' : null);
+    if (ck) {
+      var c = String(q.get(ck)).trim().toLowerCase();
+      var ce = document.getElementById('costToggle');
+      if (ce) ce.checked = (c === '1' || c === 'true' || c === 'yes' || c === 'on');
+    }
+    var sn = document.getElementById('staffNum'); if (sn) sn.value = document.getElementById('staff').value;
   }
 
   applyPrefill();
+  toggleCost();
   toggleLB();
 </script>
 </body>
